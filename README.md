@@ -2,7 +2,7 @@
 
 ## Abstract
 
-**Title:* _Nonparametric-efficient causal mediation analysis for stochastic
+**Title:** _Nonparametric-efficient causal mediation analysis for stochastic
 interventions_
 
 **Authors:** Nima Hejazi, Mark van der Laan, and Iván Díaz
