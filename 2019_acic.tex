@@ -85,19 +85,25 @@ linewidth=2pt % Width of the border lines around content boxes
 
 \begin{itemize}\compresslist
   \setlength\itemsep{0.75em}
-  \item We present a decomposition of the \textit{population intervention
-      effect}, defined through stochastic interventions.
-  \item Population intervention effects provide a generalized framework in which
-    a variety of interesting causal contrasts can be defined, including effects
-    for continuous and categorical exposures.
-  \item We propose estimators of these direct and indirect effects:
-    \begin{itemize}
-      \item substitution (G-computation), re-weighted (IPW), and
-      \item efficient estimators based on flexible regression techniques
-        (one-step, TMLE).
-    \end{itemize}
+\item Using stochastic interventions, we present a decomposition of the
+  \textit{population intervention effect} into \underline{direct} and
+  \underline{indirect} effects.
+  \begin{itemize}
+    \item Define causal contrasts of effects of continuous and categorical
+      exposures
+    \item ...
+  \end{itemize}
+\item We propose estimators of these direct and indirect effects:
+  \begin{itemize}
+    \item \textit{Classical parametric}: substitution and re-weighted (IPW)
+      estimators
+    \item \textit{Nonparamtric-efficient}: one-step and TMLE using data adaptive
+      regression
+  \end{itemize}
+\item Our efficient estimators are asymptotically linear under a condition
+  requiring $n^{1/4}$-consistency of certain regression functions.
 \end{itemize}
-\vspace{0.65cm} % When there are two boxes, some whitespace may need to be added
+\vspace{0.1cm} % When there are two boxes, some whitespace may need to be added
                 % if the one on the right has more content
 }
 
@@ -110,17 +116,21 @@ linewidth=2pt % Width of the border lines around content boxes
 
 \begin{itemize}\compresslist
   \setlength\itemsep{0.5em}
-  \item Our efficient estimators are asymptotically linear under a condition
-    requiring $n^{1/4}$-consistency of certain regression functions.
-  \item The efficient estimators are asymptotically normal with estimable
-    variance, thereby allowing for the construction of confidence intervals and
-    hypothesis tests.
   \item The \underline{\texttt{medshift} \texttt{R} package}
     \cite{hejazi2019medshift} implements these estimators and leverages
     state-of-the-art machine learning in the procedure.
-  \item \texttt{tlverse} plug: \url{https://tlverse.org}
+    \begin{itemize}
+      \item Construction of all estimators via the eponymous \texttt{medshift()}
+        function.
+      \item Uses the \texttt{sl3} \texttt{R} package to provide machine learning
+        facilities.
+    \end{itemize}
+  \item Construction of TML estimators using tools from the \texttt{tlverse}
+    software ecosystem.
   \item ...
 \end{itemize}
+\vspace{0.1cm} % When there are two boxes, some whitespace may need to be added
+                % if the one on the right has more content
 }
 
 %-------------------------------------------------------------------------------
@@ -129,26 +139,39 @@ linewidth=2pt % Width of the border lines around content boxes
 
 \headerbox{Construction of Nonparametric-Efficient Estimators}{name=results,
   column=2,span=2,row=0}{
-
 \vspace{-0.35em}
 \begin{itemize}
-\itemsep0pt
-\item To avoid entropy conditions on the initial estimators, we rely on
-    cross-fitting
-    \citep{zheng2011cross, chernozhukov2016double} --- denote by
-    $\hat \eta_{j}$ the estimator of $\eta = (g, m, e, \phi)$, obtained by
-    training the corresponding prediction algorithm using only data in the
-    sample ${\cal T}_j$. Further, let $j(i)$ denote the index of the
-    validation set which contains observation $i$. The estimator is thus
-    defined as:
-    \begin{equation}\label{eq:aipw}
-      \hat{\theta}{\delta} = \frac{1}{n} \sum_{i = 1}^n D_{\hat\eta_{j(i)},
-          \delta}(O_i) =
-        \frac{1}{n}\sum_{i = 1}^n \left\{D^Y_{\hat\eta_{j(i)}, \delta}(O_i) +
-        D^A_{\hat\eta_{j(i)}, \delta}(O_i) + D^{Z,W}_{\hat\eta_{j(i)},
-        \delta}(O_i) \right\}.
-    \end{equation}
-\item TMLE!
+\itemsep0.1pt
+\item To avoid entropy conditions on initial estimators, we rely on
+  cross-fitting \citep{zheng2011cross, chernozhukov2016double}. Let
+  $\hat \eta_{j}$ be the estimator of $\eta = (g, m, e, \phi)$ and $j(i)$ the
+  index of the validation set containing observation $i$.
+\item A one-step estimator \citep{pfanzagl1982contributions} may be
+  constructed by augmenting the substitution estimator with the efficient
+  influence function:
+  \begin{equation*}
+    \hat{\theta}_{\text{OS}}(\delta) = \frac{1}{n} \sum_{i = 1}^n
+      D_{\hat\eta_{j(i)}, \delta}(O_i) =
+      \frac{1}{n}\sum_{i = 1}^n \left\{D^Y_{\hat\eta_{j(i)}, \delta}(O_i) +
+      D^A_{\hat\eta_{j(i)}, \delta}(O_i) + D^{Z,W}_{\hat\eta_{j(i)},
+      \delta}(O_i) \right\}.
+  \end{equation*}
+  \begin{itemize}
+    \item ...
+    \item ...
+  \end{itemize}
+\item A targeted minimum loss-based estimator may be constructed by using the
+  efficient influence function as an estimating equation, updating estimates of
+  nuisance components:
+  \begin{equation*}
+    \hat{\theta}_{\text{TMLE}}(\delta) = \ldots,
+  \end{equation*}
+  where
+  \begin{itemize}
+    \item Unlike the one-step estimator, the TMLE is a substitution estimator.
+    \item Use unversal least favorable submodels for one-step estimation
+      \citep{vdl2016one}.
+  \end{itemize}
 \end{itemize}
 }
 
@@ -175,13 +198,14 @@ linewidth=2pt % Width of the border lines around content boxes
 \headerbox{\small But wait, there's more!}{name=ack,column=3,aligned=references,above=bottom}{
 % This block is as tall as the references block
 \begin{itemize}
-  \itemsep0.25pt
-  \item \textbf{N.~Hejazi}: \texttt{nhejazi@berkeley.edu}; \textbf{M.~van der
-      Laan}: \texttt{laan@berkeley.edu}; \textbf{I.~Diaz}:
-    \texttt{ild2005@med.cornell.edu}
-  \item Pre-print of our original paper: \url{https://arxiv.org/abs/1901.02776}
-  \item Iv{\'a}n's talk tomorrow morning!
+\itemsep0pt
+\item \textbf{N.~Hejazi}: \texttt{nhejazi@berkeley.edu};
+      \textbf{M.~van der Laan}: \texttt{laan@berkeley.edu};
+      \textbf{I.~D{\'\i}az}: \texttt{ild2005@med.cornell.edu}
+\item \url{https://arxiv.org/abs/1901.02776}
+\item Check out Iv{\'a}n's talk tomorrow morning!
 \end{itemize}
+\vspace{0.1cm}
 }
 
 %-------------------------------------------------------------------------------
@@ -229,46 +253,43 @@ linewidth=2pt % Width of the border lines around content boxes
 % This block's bottom aligns with the bottom of the conclusion block
 
 \begin{itemize}
-  \itemsep0.75pt
-  \item Consider $O = (W, A, Z, Y) \sim P_0 \in \mathcal{M}$, where $W$ is a set
-    of baseline covariates, $A$ an intervention, $Z$ a mediator between $A$ and
-    outcome, and $Y$ the outcome, with no assumptions on model $\mathcal{M}$.
-  \item We may decompose the PIE in terms of a \textit{population intervention
-    direct effect (PIDE)} and a \textit{population intervention indirect effect
-    (PIIE)}:
-    \begin{equation}\label{eqn:pie_decomp}
-      \psi(\delta) = \overbrace{\mathbb{E}\{Y(g, q) -
-                                      Y(g_\delta, q)\}}^{\text{PIDE}} +
-                                    \overbrace{\mathbb{E}\{Y(g_\delta, q) -
-                                      Y(g_\delta, q_\delta)\}}^{\text{PIIE}}.
-    \end{equation}
-  \item The causal parameter is identified by the observed data parameter
-    \cite{diaz2019causal}:
-    \begin{equation}
-      \theta(\delta) = \int m(a, z,
-      w)g_\delta(a\mid w)p(z,w) d\nu(a,z,w).
-    \end{equation}
-
-
-  \item Let $\eta = (g, m, e, \phi)$. The efficient influence function for
-      $\theta(\delta)$ in the nonparametric model $M$ is
-      $D^Y_{\eta, \delta}(o) + D^A_{\eta, \delta}(o) +
-      D^{Z, W}_{\eta, \delta}(o) - \theta(\delta)$, where
-      \begin{align*}
-        D^Y_{\eta, \delta}(o) &= \frac{g_{\delta}(a \mid w)}{e(a \mid z, w)}
-                                \{y - m(z,a,w) \};
-        D^{Z, W}_{\eta, \delta}(o) = \int m(z, a, w) g_{\delta}(a \mid w)
-                                     d\kappa(a),\\
-        D^A_{\eta, \delta}(o) &= \frac{g_\delta(a \mid
-          w)}{g(a \mid w)}\left\{\phi(a, w) - \int
-          \phi(a, w)g_\delta(a\mid w)d\kappa(a)\right\}.
-      \end{align*}
-      and $\phi_{0}(a, w) = \mathbb{E}\left\{\frac{g(A \mid W)}{e(A \mid Z,
-      W)} m(Z, A, W) \mid A = a, W = w \right\}$.
+\itemsep0.25pt
+\item Consider $O = (W, A, Z, Y) \sim P_0 \in \mathcal{M}$, where $W$ is a set
+  of baseline covariates, $A$ an intervention, $Z$ a mediator between $A$ and
+  outcome, and $Y$ the outcome, with no assumptions on model $\mathcal{M}$.
+\item We may decompose the PIE in terms of a \textit{population intervention
+  direct effect (PIDE)} and a \textit{population intervention indirect effect
+  (PIIE)}:
+  \begin{equation*}
+    \psi(\delta) = \overbrace{\mathbb{E}\{Y(g, q) -
+        Y(g_\delta, q)\}}^{\text{PIDE}} + \overbrace{\mathbb{E}\{Y(g_\delta, q)
+        - Y(g_\delta, q_\delta)\}}^{\text{PIIE}}.
+  \end{equation*}
+\item We show the causal parameter $\mathbb{E}\{Y(g_\delta, q)\}$ is identified
+  by the observed data parameter \cite{diaz2019causal}:
+  \begin{equation*}
+    \theta(\delta) = \int m(a, z, w)g_\delta(a\mid w)p(z,w) d\nu(a,z,w).
+  \end{equation*}
+\item Letting $\eta = (g, m, e, \phi)$, the efficient influence function for
+  $\theta(\delta)$ in the nonparametric model $M$ is $D^Y_{\eta, \delta}(o) +
+  D^A_{\eta, \delta}(o) + D^{Z, W}_{\eta, \delta}(o) - \theta(\delta)$, where
+  \vspace{-0.5em}
+  \begin{align*}
+    D^{Z, W}_{\eta, \delta}(o) &= \int m(z, a, w) g_{\delta}(a \mid w)
+      d\kappa(a),\\
+    D^A_{\eta, \delta}(o) &= \frac{g_\delta(a \mid w)}{g(a \mid w)}
+      \left\{\phi(a, w) - \int \phi(a, w)g_\delta(a\mid w)d\kappa(a)\right\}\\
+    D^Y_{\eta, \delta}(o) &= \frac{g_{\delta}(a \mid w)}{e(a \mid z, w)}
+      \{y - m(z,a,w) \},
+  \end{align*}
+  \vspace{-2em}
+  where $\phi_{0}(a, w) = \mathbb{E}\left\{\frac{g(A \mid W)}{e(A \mid Z, W)}
+  m(Z, A, W) \mid A = a, W = w \right\}$.
 \end{itemize}
+\vspace{0.5cm} % When there are two boxes, some whitespace may need to be added
+                % if the one on the right has more content
 }
 
 %-------------------------------------------------------------------------------
-
 \end{poster}
 \end{document}
