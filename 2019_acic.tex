@@ -280,18 +280,19 @@ linewidth=2pt % Width of the border lines around content boxes
   \textit{population intervention direct effect (PIDE)} and a \textit{population
   intervention indirect effect (PIIE)}:
   \begin{equation*}
-    \psi(\delta) = \overbrace{\mathbb{E}\{Y(g, q) -
-        Y(g_\delta, q)\}}^{\text{PIDE}} + \overbrace{\mathbb{E}\{Y(g_\delta, q)
-        - Y(g_\delta, q_\delta)\}}^{\text{PIIE}}.
+    \psi(\delta) = \overbrace{\mathbb{E}\{Y(A_\delta, Z(A_\delta)) -
+       Y(A_\delta, Z)\}}^{\text{PIIE}} + \overbrace{\mathbb{E}\{Y(A_\delta, Z)
+       - Y(A, Z)\}}^{\text{PIDE}}.
   \end{equation*}
-\item We show the causal parameter $\mathbb{E}\{Y(g_\delta, q)\}$ is identified
-  by a functional of the distribution of $O$ \cite{diaz2019causal}:
+\item We show causal parameter $\mathbb{E}\{Y(A_\delta, Z)\}$ is identified by a
+  functional of the distribution of $O$ \cite{diaz2019causal}:
   \begin{equation*}
     \theta(\delta) = \int m(z, a, w)g_{\delta}(a\mid w)p(z,w) d\nu(a,z,w),
   \end{equation*}
   for outcome mechanism $m(z,a,w)$ and post-intervention treatment mechanism
-  $g_{\delta}(a\mid w)$ --- a stochastic intervention on $A$ while drawing $Z$ as
-  though $A$ came from its natural distribution.
+  $g_{\delta}(a\mid w)$ --- a stochastic intervention drawing
+  $A_{\delta} \sim g_{\delta}(a \mid w)$ while drawing $Z \sim q(z \mid a, w)$,
+  where $A \sim g(a \mid w)$.
 \item Letting $\eta = (g, e, m, \phi)$, the efficient influence function for
   $\theta(\delta)$ in the nonparametric model $\mathcal{M}$ is
   $D^Y_{\eta, \delta}(o) + D^A_{\eta, \delta}(o) + D^{Z, W}_{\eta, \delta}(o) -
