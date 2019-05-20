@@ -174,17 +174,18 @@ linewidth=2pt % Width of the border lines around content boxes
     g_{\delta,n}^{\star}(a \mid w) d\kappa(a),
   \end{equation*}
   where
-  $g_{\delta,n}^{\star}(a \mid w)$ and $m^{\star}_n(z,a,w)$ come from
-  \textit{targeting} processes using parametric models
+  $g_{\delta,n}^{\star}(a \mid w)$ and $m^{\star}_n(z,a,w)$ are generated via
+  parametric \textit{targeting} processes, respectively,
   $\text{logit}(g_{\delta,n,k\epsilon}) =
-  g_{\delta,n,(k-1)\epsilon} + \epsilon_{\Delta}
+  \text{logit}(g_{\delta,n,(k-1)\epsilon}) + \epsilon_{\Delta}^{\text{lfm}}
   \mathbf{\textcolor{red}{H^A_{(k-1)\epsilon}}}$ and
-  $\text{logit}(m_{n,k\epsilon}) = m_{n,(k-1)\epsilon} + \epsilon_{\Delta}
-  \mathbf{\textcolor{blue}{H^Y_{(k-1)\epsilon}}}$, respectively.
+  $\text{logit}(m_{n,k\epsilon}) = \text{logit}(m_{n,(k-1)\epsilon}) +
+  \epsilon_{\Delta}^{\text{lfm}}
+  \mathbf{\textcolor{blue}{H^Y_{(k-1)\epsilon}}}$.
   \begin{itemize}
     \item Unlike the one-step estimator, TMLE constructs a substitution
       estimator, respecting bounds.
-    \item Targeting step uses the method of unverisal least favorable
+    \item Targeting step uses the method of universal least favorable
       one-dimensional submodels \citep{vdl2016one}.
   \end{itemize}
 \item Both are multiply robust and allow confidence intervals and hypothesis
