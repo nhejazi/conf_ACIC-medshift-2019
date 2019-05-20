@@ -92,13 +92,12 @@ linewidth=2pt % Width of the border lines around content boxes
   \begin{itemize}
     \item Define causal contrasts of effects of continuous and categorical
       exposures.
-    \item Identify a parameter required to construct both direct and indirect
+    \item Introduce a parameter necessary to construct direct and indirect
       effects.
   \end{itemize}
 \item We propose estimators for constructing these direct and indirect effects:
   \begin{itemize}
-    \item \textit{Classical}: substitution and IPW estimators using parametric
-      methods.
+    \item \textit{Classical}: G-computation and IPW based on parametric models.
     \item \textit{Nonparamtric-efficient}: one-step and TMLE leveraging machine
       learning.
   \end{itemize}
@@ -175,23 +174,23 @@ linewidth=2pt % Width of the border lines around content boxes
   \end{equation*}
   where
   $g_{\delta,n}^{\star}(a \mid w)$ and $m^{\star}_n(z,a,w)$ are generated via
-  parametric \textit{targeting} processes, respectively,
-  $\text{logit}(g_{\delta,n,k\epsilon}) =
-  \text{logit}(g_{\delta,n,(k-1)\epsilon}) + \epsilon_{\Delta}^{\text{lfm}}
-  \mathbf{\textcolor{red}{H^A_{(k-1)\epsilon}}}$ and
-  $\text{logit}(m_{n,k\epsilon}) = \text{logit}(m_{n,(k-1)\epsilon}) +
-  \epsilon_{\Delta}^{\text{lfm}}
-  \mathbf{\textcolor{blue}{H^Y_{(k-1)\epsilon}}}$.
+  \textit{targeted} fluctuation processes, respectively,
+  $\text{logit}(g_{\delta,n,k\xi}) =
+  \text{logit}(g_{\delta,n,(k-1)\xi}) + \xi_{\Delta}^{\text{lfm}}
+  \mathbf{\textcolor{red}{H^A_{(k-1)\xi}}}$ and
+  $\text{logit}(m_{n,k\xi}) = \text{logit}(m_{n,(k-1)\xi}) +
+  \xi_{\Delta}^{\text{lfm}}
+  \mathbf{\textcolor{blue}{H^Y_{(k-1)\xi}}}$.
   \begin{itemize}
     \item Unlike the one-step estimator, TMLE constructs a substitution
       estimator, respecting bounds.
     \item Targeting step uses the method of universal least favorable
       one-dimensional submodels \citep{vdl2016one}.
   \end{itemize}
-\item Both are multiply robust and allow confidence intervals and hypothesis
-  tests to be constructed from an EIF-based variance estimator
-  $\mathbb{V}(\hat{\theta}(\delta)) = D^2_{\hat{\eta}, \delta}(O)$,
-  valid even when using machine learning.
+\item Both are multiply robust, efficient, and allow construction of confidence
+  intervals and hypothesis tests based on the EIF --- i.e.,
+  $\mathbb{V}\hat{\theta}(\delta) \coloneqq \mathbb{V}D_{\hat{\eta},\delta}(O)$
+  --- valid even when leveraging machine learning.
 \end{itemize}
 }
 
@@ -286,7 +285,7 @@ linewidth=2pt % Width of the border lines around content boxes
         - Y(g_\delta, q_\delta)\}}^{\text{PIIE}}.
   \end{equation*}
 \item We show the causal parameter $\mathbb{E}\{Y(g_\delta, q)\}$ is identified
-  by the observed data parameter \cite{diaz2019causal}:
+  by a functional of the distribution of $O$ \cite{diaz2019causal}:
   \begin{equation*}
     \theta(\delta) = \int m(z, a, w)g_{\delta}(a\mid w)p(z,w) d\nu(a,z,w),
   \end{equation*}
@@ -305,8 +304,8 @@ linewidth=2pt % Width of the border lines around content boxes
     D^Y_{\eta, \delta}(o) = \mathbf{\textcolor{blue}{\frac{g_{\delta}(a \mid w)}
       {e(a \mid z, w)}}} \{y - m(z,a,w) \},\\
     D^A_{\eta,\delta}(o) &= \frac{\mathbf{\textcolor{red}{\delta\phi(w)}}\{a -
-      g(1 \mid w)\}}{\mathbf{\textcolor{red}{\{\delta g(1 \mid w) + 1 -
-      g(1 \mid w)\}^2}}},
+      g(1 \mid w)\}}{\mathbf{\textcolor{red}{\{\delta g(1 \mid w) +
+      g(0 \mid w)\}^2}}},
     \quad
     \phi(w) = \mathbb{E}\left\{m(1, Z, W) - m(0, Z, W) \mid W = w \right\},
   \end{align*}
