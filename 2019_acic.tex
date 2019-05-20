@@ -23,9 +23,10 @@
 \usepackage{amsmath} % For typesetting math
 \usepackage{amssymb} % Adds new symbols to be used in math mode
 \usepackage{mathtools}
+\usepackage{bm}
 \usepackage{url}
 \usepackage[numbers]{natbib}
-
+\usepackage{color,soul}
 \usepackage{booktabs} % Top and bottom rules for tables
 \usepackage{enumitem} % Used to reduce itemize/enumerate spacing
 \usepackage{palatino} % Use the Palatino font
@@ -90,20 +91,22 @@ linewidth=2pt % Width of the border lines around content boxes
   \underline{indirect} effects.
   \begin{itemize}
     \item Define causal contrasts of effects of continuous and categorical
-      exposures
-    \item ...
+      exposures.
+    \item Identify a parameter required to construct both direct and indirect
+      effects.
   \end{itemize}
-\item We propose estimators of these direct and indirect effects:
+\item We propose estimators for constructing these direct and indirect effects:
   \begin{itemize}
-    \item \textit{Classical parametric}: substitution and re-weighted (IPW)
-      estimators
-    \item \textit{Nonparamtric-efficient}: one-step and TML estimators with
-      machine learning
+    \item \textit{Classical}: substitution and IPW estimators using parametric
+      methods.
+    \item \textit{Nonparamtric-efficient}: one-step and TMLE leveraging machine
+      learning.
   \end{itemize}
-\item Our efficient estimators are asymptotically linear under a condition
-  requiring $n^{1/4}$-consistency of nuisance regression functions
+\item Our efficient estimators are asymptotically linear under
+  $n^{1/4}$-consistency of nuisance functions (may use highly adaptive
+  lasso).
 \end{itemize}
-\vspace{0.1cm} % When there are two boxes, some whitespace may need to be added
+\vspace{0.05cm} % When there are two boxes, some whitespace may need to be added
                 % if the one on the right has more content
 }
 
@@ -122,14 +125,21 @@ linewidth=2pt % Width of the border lines around content boxes
     \begin{itemize}
       \item Construction of all estimators via the eponymous \texttt{medshift()}
         function.
-      \item Uses the \texttt{sl3} \texttt{R} package to provide machine learning
-        facilities.
+      \item Uses the \texttt{sl3} \texttt{R} package to incorporate machine
+        learning facilities.
+      \item Relies on the framework of the \texttt{tmle3} \texttt{R} package for
+        TMLE implementation.
+      \item Flexible cross-fitting implementation via the \texttt{origami}
+        \texttt{R} package.
     \end{itemize}
-  \item Construction of TML estimators using tools from the \texttt{tlverse}
-    software ecosystem.
-  \item ...
+  \item \texttt{sl3}, \texttt{tmle3}, and \texttt{origami} are core engines of
+    the new \textbf{\texttt{tlverse}} software ecosystem.
+    \begin{itemize}
+      \item Check out \url{https://tlverse.org}
+      \item Our handbook: \url{https://tlverse.org/tlverse-handbook}
+    \end{itemize}
 \end{itemize}
-\vspace{0.1cm} % When there are two boxes, some whitespace may need to be added
+\vspace{0.05cm} % When there are two boxes, some whitespace may need to be added
                 % if the one on the right has more content
 }
 
@@ -143,35 +153,44 @@ linewidth=2pt % Width of the border lines around content boxes
 \begin{itemize}
 \itemsep0.1pt
 \item To avoid entropy conditions on initial estimators, we rely on
-  cross-fitting \citep{zheng2011cross, chernozhukov2016double}, letting
+  cross-validation \citep{zheng2011cross, chernozhukov2016double}, letting
   $\hat{\eta}_{j}$ be the estimator of $\eta = (g, e, m, \phi)$ and $j(i)$ the
   index of the validation set containing observation $i$.
 \item A one-step estimator \citep{pfanzagl1982contributions} may be
   constructed by augmenting the substitution estimator with the auxiliary scores
-  ($D^A$ and $D^Y$) in the efficient influence function, yielding
+  ($D^A$ and $D^Y$) in the efficient influence function (EIF), yielding
   \begin{equation*}
     \hat{\theta}_{\text{OS}}(\delta) = \frac{1}{n} \sum_{i = 1}^n
-      D_{\hat\eta_{j(i)}, \delta}(O_i) =
+    D_{\hat{\eta}_{j(i)}, \delta}(O_i) =
       \frac{1}{n}\sum_{i = 1}^n \left\{D^Y_{\hat\eta_{j(i)}, \delta}(O_i) +
       D^A_{\hat\eta_{j(i)}, \delta}(O_i) + D^{Z,W}_{\hat\eta_{j(i)},
       \delta}(O_i) \right\}.
   \end{equation*}
-  \begin{itemize}
-    \item ...
-    \item ...
-  \end{itemize}
-\item A targeted minimum loss-based estimator may be constructed by using the
-  efficient influence function as an estimating equation, updating components of
-  th substitution estimator:
+\item A targeted minimum loss estimator (TMLE) may be constructed by using the
+  efficient influence function to update components of the substitution
+  estimator via a targeting procedure:
   \begin{equation*}
-    \hat{\theta}_{\text{TMLE}}(\delta) = \ldots,
+    \hat{\theta}_{\text{TMLE}}(\delta) = \int m^{\star}_n(z, a, w)
+    g_{\delta,n}^{\star}(a \mid w) d\kappa(a),
   \end{equation*}
   where
+  $g_{\delta,n}^{\star}(a \mid w)$ and $m^{\star}_n(z,a,w)$ come from
+  \textit{targeting} processes using parametric models
+  $\text{logit}(g_{\delta,n,k\epsilon}) =
+  g_{\delta,n,(k-1)\epsilon} + \epsilon_{\Delta}
+  \mathbf{\textcolor{red}{H^A_{(k-1)\epsilon}}}$ and
+  $\text{logit}(m_{n,k\epsilon}) = m_{n,(k-1)\epsilon} + \epsilon_{\Delta}
+  \mathbf{\textcolor{blue}{H^Y_{(k-1)\epsilon}}}$, respectively.
   \begin{itemize}
-    \item Unlike the one-step estimator, the TMLE is a substitution estimator.
-    \item Use unversal least favorable submodels for one-step estimation
-      \citep{vdl2016one}.
+    \item Unlike the one-step estimator, TMLE constructs a substitution
+      estimator, respecting bounds.
+    \item Targeting step uses the method of unverisal least favorable
+      one-dimensional submodels \citep{vdl2016one}.
   \end{itemize}
+\item Both are multiply robust and allow confidence intervals and hypothesis
+  tests to be constructed from an EIF-based variance estimator
+  $\mathbb{V}(\hat{\theta}(\delta)) = D^2_{\hat{\eta}, \delta}(O)$,
+  valid even when using machine learning.
 \end{itemize}
 }
 
@@ -203,7 +222,7 @@ linewidth=2pt % Width of the border lines around content boxes
       \textbf{M.~van der Laan}: \texttt{laan@berkeley.edu};
       \textbf{I.~D{\'\i}az}: \texttt{ild2005@med.cornell.edu}
 \item \url{https://arxiv.org/abs/1901.02776}
-\item Check out Iv{\'a}n's talk tomorrow morning!
+\item Check out Iv{\'a}n's talk Friday morning!
 \end{itemize}
 \vspace{0.1cm}
 }
@@ -235,10 +254,10 @@ linewidth=2pt % Width of the border lines around content boxes
 
 \begin{itemize}
   \itemsep0pt
-  \item All estimators approx.~unbiased in large samples; however, inefficient
-    TMLE with HAL has bias not converging at $n^{-\frac{1}{2}}$.
-  \item Fitting $\Pi$ with HAL or GLM, efficient TMLE has lower variance than
-    the inefficient.\\
+  \item All estimators approximately unbiased in large samples; TMLE outperforms
+    one-step uniformly in smaller-sample settings.
+  \item Inference is only valid for the one-step and TMLE when using machine
+    learning (here, HAL) for estimating nuisance regressions.\\
 \end{itemize}
 
 \end{multicols}
@@ -268,11 +287,11 @@ linewidth=2pt % Width of the border lines around content boxes
 \item We show the causal parameter $\mathbb{E}\{Y(g_\delta, q)\}$ is identified
   by the observed data parameter \cite{diaz2019causal}:
   \begin{equation*}
-    \theta(\delta) = \int m(a, z, w)g_\delta(a\mid w)p(z,w) d\nu(a,z,w),
+    \theta(\delta) = \int m(z, a, w)g_{\delta}(a\mid w)p(z,w) d\nu(a,z,w),
   \end{equation*}
-  which corresponds to implementing a stochastic intervention (indexed by
-  $\delta$) on $A$ while drawing $Z$ as though $A$ were generated by its natural
-  (observed) distribution.
+  for outcome mechanism $m(z,a,w)$ and post-intervention treatment mechanism
+  $g_{\delta}(a\mid w)$ --- a stochastic intervention on $A$ while drawing $Z$ as
+  though $A$ came from its natural distribution.
 \item Letting $\eta = (g, e, m, \phi)$, the efficient influence function for
   $\theta(\delta)$ in the nonparametric model $\mathcal{M}$ is
   $D^Y_{\eta, \delta}(o) + D^A_{\eta, \delta}(o) + D^{Z, W}_{\eta, \delta}(o) -
@@ -282,10 +301,11 @@ linewidth=2pt % Width of the border lines around content boxes
     D^{Z, W}_{\eta, \delta}(o) &= \int m(z, a, w) g_{\delta}(a \mid w)
       d\kappa(a),
     \quad
-    D^Y_{\eta, \delta}(o) = \frac{g_{\delta}(a \mid w)}{e(a \mid z, w)}
-      \{y - m(z,a,w) \},\\
-    D^A_{\eta,\delta}(o) &= \frac{\delta\phi(w)\{a - g(1\mid w)\}}{\{\delta
-      g(1\mid w) + 1 - g(1\mid w)\}^2},
+    D^Y_{\eta, \delta}(o) = \mathbf{\textcolor{blue}{\frac{g_{\delta}(a \mid w)}
+      {e(a \mid z, w)}}} \{y - m(z,a,w) \},\\
+    D^A_{\eta,\delta}(o) &= \frac{\mathbf{\textcolor{red}{\delta\phi(w)}}\{a -
+      g(1 \mid w)\}}{\mathbf{\textcolor{red}{\{\delta g(1 \mid w) + 1 -
+      g(1 \mid w)\}^2}}},
     \quad
     \phi(w) = \mathbb{E}\left\{m(1, Z, W) - m(0, Z, W) \mid W = w \right\},
   \end{align*}
