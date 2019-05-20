@@ -169,17 +169,18 @@ linewidth=2pt % Width of the border lines around content boxes
   efficient influence function to update components of the substitution
   estimator via a targeting procedure:
   \begin{equation*}
-    \hat{\theta}_{\text{TMLE}}(\delta) = \int m^{\star}_n(z, a, w)
-    g_{\delta,n}^{\star}(a \mid w) d\kappa(a),
+    \hat{\theta}_{\text{TMLE}}(\delta) = \int \sum_{i=1}^n
+    \hat{m}^{\star}(Z_{j(i)}, a, W_{j(i)})
+    \hat{g}_{\delta}^{\star}(a \mid W_{j(i)}) d\kappa(a),
   \end{equation*}
   where
-  $g_{\delta,n}^{\star}(a \mid w)$ and $m^{\star}_n(z,a,w)$ are generated via
-  \textit{targeted} fluctuation processes, respectively,
-  $\text{logit}(g_{\delta,n,k\xi}) =
-  \text{logit}(g_{\delta,n,(k-1)\xi}) + \xi_{\Delta}^{\text{lfm}}
+  $\hat{g}_{\delta}^{\star}(a \mid w)$ and $\hat{m}^{\star}(z,a,w)$ are
+  generated via \textit{targeted} fluctuation processes, respectively,
+  $\text{logit}(\hat{g}_{\delta,k\xi}) =
+  \text{logit}(\hat{g}_{\delta,(k-1)\xi}) + \xi_{\Delta g}^{\text{lfm}}
   \mathbf{\textcolor{red}{H^A_{(k-1)\xi}}}$ and
-  $\text{logit}(m_{n,k\xi}) = \text{logit}(m_{n,(k-1)\xi}) +
-  \xi_{\Delta}^{\text{lfm}}
+  $\text{logit}(\hat{m}_{k\xi}) = \text{logit}(\hat{m}_{(k-1)\xi}) +
+  \xi_{\Delta m}^{\text{lfm}}
   \mathbf{\textcolor{blue}{H^Y_{(k-1)\xi}}}$.
   \begin{itemize}
     \item Unlike the one-step estimator, TMLE constructs a substitution
