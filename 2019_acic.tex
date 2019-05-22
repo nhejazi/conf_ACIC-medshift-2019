@@ -76,7 +76,7 @@ linewidth=2pt % Width of the border lines around content boxes
   \textit{Division of Biostatistics, Dept.~of Healthcare Policy \& Research,
           Weill Cornell Medicine}}
     % Author names and institution
-%{\includegraphics[height=6.5em]{logo_weill.jpg}} % Second university/lab logo on the right
+{\includegraphics[height=7.0em]{logo_weill.png}} % Second university/lab logo on the right
 
 %-------------------------------------------------------------------------------
 % OVERVIEW
@@ -98,7 +98,7 @@ linewidth=2pt % Width of the border lines around content boxes
 \item We propose estimators for constructing these direct and indirect effects:
   \begin{itemize}
     \item \textit{Classical}: G-computation and IPW based on parametric models.
-    \item \textit{Nonparamtric-efficient}: one-step and TMLE leveraging machine
+    \item \textit{Efficient}: one-step and TML estimators leveraging machine
       learning.
   \end{itemize}
 \item Our efficient estimators are asymptotically linear under
@@ -169,19 +169,21 @@ linewidth=2pt % Width of the border lines around content boxes
   efficient influence function to update components of the substitution
   estimator via a targeting procedure:
   \begin{equation*}
-    \hat{\theta}_{\text{TMLE}}(\delta) = \int \sum_{i=1}^n
-    \hat{m}^{\star}(Z_{j(i)}, a, W_{j(i)})
-    \hat{g}_{\delta}^{\star}(a \mid W_{j(i)}) d\kappa(a),
+    \hat{\theta}_{\text{TMLE}}(\delta) = \int \frac{1}{n} \sum_{i=1}^n
+    \hat{m}^{\star}_{j(i)}(Z, a, W)
+    \hat{g}_{\delta, j(i)}^{\star}(a \mid W) d\kappa(a),
   \end{equation*}
   where
   $\hat{g}_{\delta}^{\star}(a \mid w)$ and $\hat{m}^{\star}(z,a,w)$ are
-  generated via \textit{targeted} fluctuation processes, respectively,
-  $\text{logit}(\hat{g}_{\delta,k\xi}) =
-  \text{logit}(\hat{g}_{\delta,(k-1)\xi}) + \xi_{\Delta g}^{\text{lfm}}
-  \mathbf{\textcolor{red}{H^A_{(k-1)\xi}}}$ and
-  $\text{logit}(\hat{m}_{k\xi}) = \text{logit}(\hat{m}_{(k-1)\xi}) +
-  \xi_{\Delta m}^{\text{lfm}}
-  \mathbf{\textcolor{blue}{H^Y_{(k-1)\xi}}}$.
+  generated via \textit{targeted} fluctuation regressions that tilt initial
+  estimators towards solutions of the score equations $\sum_{i=1}^n D^A = 0$ and
+  $\sum_{i=1}^n D^Y = 0$, respectively.
+  %$\text{logit}(\hat{g}_{\delta,k\xi}) =
+  %\text{logit}(\hat{g}_{\delta,(k-1)\xi}) + \xi_{\Delta g}^{\text{lfm}}
+  %\mathbf{\textcolor{red}{H^A_{(k-1)\xi}}}$ and
+  %$\text{logit}(\hat{m}_{k\xi}) = \text{logit}(\hat{m}_{(k-1)\xi}) +
+  %\xi_{\Delta m}^{\text{lfm}}
+  %\mathbf{\textcolor{blue}{H^Y_{(k-1)\xi}}}$.
   \begin{itemize}
     \item Unlike the one-step estimator, TMLE constructs a substitution
       estimator, respecting bounds.
@@ -292,8 +294,8 @@ linewidth=2pt % Width of the border lines around content boxes
   \end{equation*}
   for outcome mechanism $m(z,a,w)$ and post-intervention treatment mechanism
   $g_{\delta}(a\mid w)$ --- a stochastic intervention drawing
-  $A_{\delta} \sim g_{\delta}(a \mid w)$ while drawing $Z \sim q(z \mid a, w)$,
-  where $A \sim g(a \mid w)$.
+  $A_{\delta} \sim g_{\delta}(a \mid w)$ while letting mediator $Z$ take on its
+  natural value.
 \item Letting $\eta = (g, e, m, \phi)$, the efficient influence function for
   $\theta(\delta)$ in the nonparametric model $\mathcal{M}$ is
   $D^Y_{\eta, \delta}(o) + D^A_{\eta, \delta}(o) + D^{Z, W}_{\eta, \delta}(o) -
