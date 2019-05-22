@@ -175,9 +175,10 @@ linewidth=2pt % Width of the border lines around content boxes
   \end{equation*}
   where
   $\hat{g}_{\delta}^{\star}(a \mid w)$ and $\hat{m}^{\star}(z,a,w)$ are
-  generated via \textit{targeted} fluctuation regressions that tilt initial
-  estimators towards solutions of the score equations $\sum_{i=1}^n D^A = 0$ and
-  $\sum_{i=1}^n D^Y = 0$, respectively.
+  generated via \textit{targeting} fluctuation regressions that tilt initial
+  estimates towards solutions of scores
+  $\frac{1}{n}\sum_{i=1}^n D^A(O_i) = 0$ and
+  $\frac{1}{n}\sum_{i=1}^n D^Y(O_i) = 0$, respectively.
   %$\text{logit}(\hat{g}_{\delta,k\xi}) =
   %\text{logit}(\hat{g}_{\delta,(k-1)\xi}) + \xi_{\Delta g}^{\text{lfm}}
   %\mathbf{\textcolor{red}{H^A_{(k-1)\xi}}}$ and
@@ -234,35 +235,25 @@ linewidth=2pt % Width of the border lines around content boxes
 % CONCLUSION
 %-------------------------------------------------------------------------------
 
-\headerbox{Results \& Discussion}
+\headerbox{Numerical Study \& Results}
 {name=conclusion,column=2,span=2,row=0,below=results,above=references}{
-
 \vspace{0.25em}
-
 \begin{multicols}{2}
+\begin{center}
+\vspace*{-0.5cm}
+\includegraphics[scale=0.12]{bias_scaled_comparison_estim_acic2019}
+\vspace*{-0.4cm}
+\captionof{figure}{\scriptsize{All estimators approximately unbiased in large
+  samples. TMLE outperforms the one-step estimator in smaller samples.}}
+\end{center}
 
-%\begin{center}
-%\vspace*{-0.5cm}
-%\includegraphics[scale=0.37]{bias_composed_plot}
-%%\captionof{figure}{This figure demonstrates...}
-%\end{center}
-
-%\begin{center}
-%%\vspace*{-0.49cm}  % CHANGE THIS TO ALIGN IMAGES
-%\includegraphics[scale=0.39]{rel_eff_composed_plot}
-%%\captionof{figure}{This figure demonstrates...}
-%\end{center}
-
-%\vspace{-15pt}
-
-\begin{itemize}
-  \itemsep0pt
-  \item All estimators approximately unbiased in large samples; TMLE outperforms
-    one-step uniformly in smaller-sample settings.
-  \item Inference is only valid for the one-step and TMLE when using machine
-    learning (here, HAL) for estimating nuisance regressions.\\
-\end{itemize}
-
+\begin{center}
+\vspace*{-0.52cm}  % CHANGE THIS TO ALIGN IMAGES
+\includegraphics[scale=0.12]{mse_scaled_comparison_estim_acic2019}
+\vspace*{-0.4cm}
+\captionof{figure}{\scriptsize{Inference is only valid for the one-step and TMLE
+  when using machine learning (here, HAL) for estimating nuisance regressions.}}
+\end{center}
 \end{multicols}
 }
 
